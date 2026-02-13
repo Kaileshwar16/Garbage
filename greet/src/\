@@ -1,0 +1,25 @@
+import React from "react";
+import Header from "./Header.jsx";
+
+const App = () => {
+
+  const handleClick = (e) => {
+    console.log(e.target.innerText);
+  };
+
+  const handleClick2 = (name) => {
+         console.log(`Thanks for the support ${name}`);
+  };
+
+  return (
+    <div style={{ textAlign: "center", marginTop: "100px" }}>
+      <Header />
+      <button onClick={handleClick}>Click Me</button>
+      <p onDoubleClick={() => handleClick2("Raj")}>
+  Double-click me
+</p>
+    </div>
+  );
+};
+
+export default App;

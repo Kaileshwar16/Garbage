@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 export const UserCtx = createContext(null);
 
@@ -30,9 +30,28 @@ const defaultUser = {
 };
 
 export function UserProvider({ children }) {
-  const [user, setUser] = useState(defaultUser);
+  // 1. Initialize state from LocalStorage if it exists, otherwise use default
+  const [user, setUser] = useState(() => {
+    const savedUser = localStorage.getItem("fitsync_user");
+    return savedUser ? JSON.parse(savedUser) : defaultUser;
+  });
+
+  // 2. Sync to LocalStorage whenever the user object changes
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem("fitsync_user", JSON.stringify(user));
+    }
+  }, [user]);
+
+  // 3. Helper to clear session (Logout)
+  const logout = () => {
+    localStorage.removeItem("fitsync_user");
+    localStorage.removeItem("token"); // Clear the JWT too
+    setUser(defaultUser);
+  };
+
   return (
-    <UserCtx.Provider value={{ user, setUser }}>
+    <UserCtx.Provider value={{ user, setUser, logout }}>
       {children}
     </UserCtx.Provider>
   );

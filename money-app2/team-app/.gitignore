@@ -1,0 +1,12 @@
+node_modules/
+*/node_modules/
+frontend/build/
+.env
+.env.local
+backend/uploads/*
+!backend/uploads/.gitkeep
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.vscode/
+coverage/
